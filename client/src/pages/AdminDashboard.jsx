@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Icon, { ICON_NAMES } from "../components/Icon.jsx";
+import Icon, { CATEGORY_ICONS } from "../components/Icon.jsx";
 import { EmptyState, Loading } from "../components/Common.jsx";
 import { api } from "../lib/api.js";
 import { clearCategoryCache, useApi } from "../lib/hooks.js";
@@ -159,7 +159,11 @@ function Categories() {
         <b>{draft._id ? "Sửa danh mục" : "Thêm danh mục"}</b>
         <input value={draft.categoryName} onChange={(e) => setDraft({ ...draft, categoryName: e.target.value })} placeholder="Tên danh mục" />
         <input value={draft.description} onChange={(e) => setDraft({ ...draft, description: e.target.value })} placeholder="Mô tả" />
-        <select value={draft.icon} onChange={(e) => setDraft({ ...draft, icon: e.target.value })}>{ICON_NAMES.map((n) => <option key={n}>{n}</option>)}</select>
+        <div className="icon-picker" role="radiogroup" aria-label="Icon danh mục">
+          {CATEGORY_ICONS.map((n) => (
+            <button type="button" key={n} title={n} aria-label={n} aria-checked={draft.icon === n} role="radio" className={draft.icon === n ? "active" : ""} onClick={() => setDraft({ ...draft, icon: n })}><Icon name={n} size={15} /></button>
+          ))}
+        </div>
         <button className="primary-button" type="submit">{draft._id ? "Lưu" : "Thêm"}</button>
       </form>
       {loading && !categories ? <Loading /> : (

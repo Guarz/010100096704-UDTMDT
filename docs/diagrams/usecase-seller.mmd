@@ -1,0 +1,20 @@
+flowchart LR
+    Seller(["👤 Seller"])
+    subgraph SYS["Use case của Seller"]
+        direction TB
+        UC0(["Đăng nhập"])
+        UC1(["Quản lý thông tin cá nhân"])
+        UC2(["Cập nhật thông tin gian hàng"])
+        UC3(["Quản lý sản phẩm"])
+        UC4(["Cập nhật tồn kho"])
+        UC5(["Quản lý đơn hàng bán"])
+        UC6(["Xem thống kê doanh thu"])
+    end
+    Seller --- UC1
+    Seller --- UC2
+    Seller --- UC3
+    Seller --- UC5
+    Seller --- UC6
+    UC3 -. "&laquo;include&raquo;" .-> UC4
+    UC1 -. "&laquo;include&raquo;" .-> UC0
+    UC3 -. "&laquo;include&raquo;" .-> UC0

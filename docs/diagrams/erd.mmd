@@ -1,0 +1,119 @@
+erDiagram
+    USER ||--o{ USER_ADDRESS : "nhúng"
+    USER ||--o| SHOP : "sở hữu (1 user - tối đa 1 shop)"
+    USER ||--o| CART : "có"
+    USER ||--o{ ORDER : "đặt"
+    USER ||--o{ REVIEW : "viết"
+    SHOP ||--o{ SHOP_ADDRESS : "nhúng"
+    SHOP ||--o{ PRODUCT : "bán"
+    SHOP ||--o{ ORDER : "nhận"
+    CATEGORY ||--o{ PRODUCT : "phân loại"
+    PRODUCT ||--o{ PRODUCT_IMAGE : "nhúng"
+    PRODUCT ||--o{ PRODUCT_SPEC : "nhúng"
+    PRODUCT ||--o{ REVIEW : "được đánh giá"
+    CART ||--o{ CART_ITEM : "nhúng"
+    PRODUCT ||--o{ CART_ITEM : "tham chiếu"
+    ORDER ||--|{ ORDER_ITEM : "nhúng"
+    PRODUCT ||--o{ ORDER_ITEM : "tham chiếu"
+    ORDER ||--|| PAYMENT : "thanh toán"
+
+    USER {
+        ObjectId _id PK
+        string username UK
+        string email UK
+        string password "bcrypt"
+        string fullName
+        string phone
+        date birthday
+        string role "Buyer | Seller | Admin"
+        string status "Active | Locked"
+    }
+    USER_ADDRESS {
+        string recipientName
+        string phone
+        string street
+        string city
+        boolean isDefault
+    }
+    SHOP {
+        ObjectId _id PK
+        ObjectId seller FK
+        string shopName
+        string description
+        string status "Pending | Approved | Rejected"
+        string rejectReason
+    }
+    SHOP_ADDRESS {
+        string label
+        string phone
+        string street
+        string city
+    }
+    CATEGORY {
+        ObjectId _id PK
+        string categoryName UK
+        string description
+        string icon
+    }
+    PRODUCT {
+        ObjectId _id PK
+        ObjectId shop FK
+        ObjectId category FK
+        string productName
+        string brand
+        number price
+        number oldPrice
+        number stock
+        string approvalStatus "Pending | Approved | Rejected"
+        number rating
+        number sold
+    }
+    PRODUCT_IMAGE {
+        string imageUrl
+        boolean isThumbnail
+    }
+    PRODUCT_SPEC {
+        string attributeName
+        string attributeValue
+    }
+    CART {
+        ObjectId _id PK
+        ObjectId buyer FK "unique"
+    }
+    CART_ITEM {
+        ObjectId product FK
+        number quantity
+    }
+    ORDER {
+        ObjectId _id PK
+        string code UK
+        ObjectId buyer FK
+        ObjectId shop FK
+        date orderDate
+        number totalAmount
+        string orderStatus "Pending | Shipping | Delivered | Canceled"
+        object shippingAddress
+    }
+    ORDER_ITEM {
+        ObjectId product FK
+        string productName
+        number quantity
+        number unitPrice
+    }
+    PAYMENT {
+        ObjectId _id PK
+        ObjectId order FK "unique"
+        string paymentMethod "VNPay | COD"
+        string paymentStatus "Pending | Paid | Failed | Refunded"
+        number amount
+        string transactionRef
+        date paidAt
+    }
+    REVIEW {
+        ObjectId _id PK
+        ObjectId buyer FK
+        ObjectId shop FK
+        ObjectId product FK
+        number rating "1-5"
+        string comment
+    }

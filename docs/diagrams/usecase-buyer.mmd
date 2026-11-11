@@ -1,0 +1,34 @@
+flowchart LR
+    Guest(["👤 Guest"])
+    Buyer(["👤 Buyer"])
+    VNPay(["🏦 VNPay"])
+    subgraph SYS["Use case của Guest và Buyer"]
+        direction TB
+        UC1(["Đăng ký"])
+        UC2(["Đăng nhập"])
+        UC4(["Tìm kiếm & lọc sản phẩm"])
+        UC5(["Xem chi tiết sản phẩm"])
+        UC3(["Quản lý thông tin cá nhân"])
+        UC6(["Quản lý giỏ hàng"])
+        UC7(["Đặt hàng"])
+        UC8(["Thanh toán VNPay"])
+        UC9(["Theo dõi & hủy đơn hàng"])
+        UC10(["Đánh giá sản phẩm"])
+        UC11(["Gửi yêu cầu Trở thành đối tác"])
+    end
+    Guest --- UC1
+    Guest --- UC2
+    Guest --- UC4
+    Guest --- UC5
+    Buyer --- UC3
+    Buyer --- UC6
+    Buyer --- UC7
+    Buyer --- UC9
+    Buyer --- UC10
+    Buyer --- UC11
+    Buyer -. "kế thừa Guest" .-> Guest
+    UC7 -. "&laquo;include&raquo;" .-> UC6
+    UC7 -. "&laquo;extend&raquo;" .-> UC8
+    UC8 --- VNPay
+    UC3 -. "&laquo;include&raquo;" .-> UC2
+    UC10 -. "&laquo;include&raquo;" .-> UC2

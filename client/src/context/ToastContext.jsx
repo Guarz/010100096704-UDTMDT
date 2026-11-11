@@ -16,7 +16,7 @@ export function ToastProvider({ children }) {
       {children}
       {toast && (
         <div className={`toast ${toast.type}`}>
-          <span><Icon name={toast.type === "error" ? "close" : "check"} size={17} /></span>
+          <span><Icon name={toast.type === "error" ? "close" : "check"} size={13} /></span>
           {toast.message}
         </div>
       )}

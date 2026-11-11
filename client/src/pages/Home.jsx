@@ -47,7 +47,7 @@ export default function Home() {
           <span className="eyebrow">Công nghệ mới · Giá tốt mỗi ngày</span>
           <h1>Nâng cấp công nghệ<br /><em>Bứt phá trải nghiệm</em></h1>
           <p>Khám phá hệ sinh thái công nghệ chính hãng với ưu đãi đặc quyền, giao nhanh và bảo hành tận tâm.</p>
-          <button className="primary-button" onClick={() => goCategory("Điện thoại")}>Khám phá ngay <Icon name="arrow" size={18} /></button>
+          <button className="primary-button" onClick={() => navigate("/category")}>Khám phá ngay <Icon name="arrow" size={18} /></button>
           <div className="hero-metrics"><span><b>100%</b><small>Chính hãng</small></span><span><b>30 ngày</b><small>Đổi trả</small></span><span><b>0%</b><small>Trả góp</small></span></div>
         </div>
         <img src={img("photo-1654555023156-0a1c9cdf1130")} alt="Laptop và điện thoại công nghệ hiện đại" />
@@ -61,7 +61,7 @@ export default function Home() {
       </div>
 
       <section className="section shell">
-        <div className="section-heading"><div><span>Danh mục</span><h2>Mua sắm theo nhu cầu</h2></div><button onClick={() => navigate("/search")}>Xem tất cả <Icon name="arrow" size={16} /></button></div>
+        <div className="section-heading"><div><span>Danh mục</span><h2>Mua sắm theo nhu cầu</h2></div><button onClick={() => navigate("/category")}>Xem tất cả <Icon name="arrow" size={16} /></button></div>
         <div className="category-grid">{categories.map((cat) => <button className="category-card" key={cat._id} onClick={() => navigate(`/category/${cat._id}`)}><span><Icon name={cat.icon} size={28} /></span><b>{cat.categoryName}</b><small>{cat.productCount} sản phẩm</small></button>)}</div>
       </section>
 

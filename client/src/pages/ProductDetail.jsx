@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Icon from "../components/Icon.jsx";
+import Icon, { Stars } from "../components/Icon.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import { Breadcrumb, EmptyState, Loading } from "../components/Common.jsx";
 import { api } from "../lib/api.js";
@@ -38,7 +38,7 @@ function Reviews({ product, onRated }) {
     <section className="review-section">
       <div className="review-summary">
         <span>Đánh giá sản phẩm</span>
-        <div><strong>{product.rating || "–"}</strong><p><b>{"★".repeat(Math.round(product.rating || 0)).padEnd(5, "☆")}</b><small>Dựa trên {product.reviewCount} lượt đánh giá</small></p></div>
+        <div><strong>{product.rating || "–"}</strong><p><b><Stars value={product.rating} size={15} /></b><small>Dựa trên {product.reviewCount} lượt đánh giá</small></p></div>
         <div className="rating-bars">
           {(data?.distribution || []).map(({ star, count }) => {
             const percent = total ? Math.round((count / total) * 100) : 0;
@@ -55,7 +55,7 @@ function Reviews({ product, onRated }) {
             return (
               <article key={item._id}>
                 <div className="review-avatar">{name.charAt(0)}</div>
-                <div><b>{name}<span>Đã mua tại NOVA</span></b><p className="review-stars">{"★".repeat(item.rating)}</p><p>{item.comment}</p><small>{date(item.createdAt)}</small></div>
+                <div><b>{name}<span>Đã mua tại NOVA</span></b><p className="review-stars"><Stars value={item.rating} size={11} /></p><p>{item.comment}</p><small>{date(item.createdAt)}</small></div>
               </article>
             );
           })}
@@ -63,7 +63,7 @@ function Reviews({ product, onRated }) {
         <form className="review-form" onSubmit={submit}>
           <b>Viết đánh giá của bạn</b>
           <p>Chia sẻ trải nghiệm để giúp khách hàng khác lựa chọn tốt hơn. Chỉ khách đã nhận hàng mới có thể đánh giá.</p>
-          <label>Mức đánh giá <span className="star-picker">{[1, 2, 3, 4, 5].map((n) => <button type="button" key={n} onClick={() => setStars(n)} aria-label={`${n} sao`}>{n <= stars ? "★" : "☆"}</button>)}</span></label>
+          <label>Mức đánh giá <span className="star-picker">{[1, 2, 3, 4, 5].map((n) => <button type="button" key={n} onClick={() => setStars(n)} aria-label={`${n} sao`}><Icon name={n <= stars ? "star" : "star-empty"} size={16} /></button>)}</span></label>
           <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Nhập nhận xét về sản phẩm..." />
           <button className="primary-button" type="submit">{user ? "Gửi đánh giá" : "Đăng nhập để đánh giá"}</button>
         </form>
@@ -109,7 +109,7 @@ export default function ProductDetail() {
             <span className="modal-brand">{product.brand} · Mã sản phẩm {productCode(product)}</span>
             <h1>{product.productName}</h1>
             <div className="detail-meta">
-              <div className="rating"><span><Icon name="star" size={14} fill="currentColor" /></span><b>{product.rating || "Mới"}</b><small>{product.reviewCount} đánh giá</small></div>
+              <div className="rating"><span><Icon name="star" size={13} /></span><b>{product.rating || "Mới"}</b><small>{product.reviewCount} đánh giá</small></div>
               <p className={inStock ? "stock" : "out"}><span className="status-dot" />{inStock ? `Còn hàng (${product.stock})` : "Tạm hết hàng"}</p>
               <p className="shop-name"><Icon name="box" size={14} /> {product.shop.shopName}</p>
             </div>

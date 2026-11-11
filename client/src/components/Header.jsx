@@ -5,7 +5,6 @@ import { api } from "../lib/api.js";
 import { money, thumb } from "../lib/format.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useCart } from "../context/CartContext.jsx";
-import { useCategories } from "../lib/hooks.js";
 
 export function goSection(navigate, pathname, id) {
   const scroll = () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -21,7 +20,6 @@ export default function Header() {
   const [params] = useSearchParams();
   const { user } = useAuth();
   const { count } = useCart();
-  const categories = useCategories();
   const [search, setSearch] = useState(pathname === "/search" ? params.get("q") || "" : "");
   const [suggestions, setSuggestions] = useState([]);
   const [focused, setFocused] = useState(false);
@@ -40,7 +38,6 @@ export default function Header() {
     setFocused(false);
     navigate(`/search?q=${encodeURIComponent(search.trim())}`);
   };
-  const firstCategory = categories[0]?._id;
   const showSuggestions = focused && suggestions.length > 0 && pathname !== "/search";
 
   return (
@@ -66,17 +63,19 @@ export default function Header() {
             </div>
           )}
         </div>
-        <button className="header-action" onClick={() => navigate("/account")}>
-          <Icon name="user" />
-          <span><small>Tài khoản</small><b>{user ? user.fullName || user.username : "Đăng nhập"}</b></span>
-        </button>
-        <button className="header-action" onClick={() => goSection(navigate, pathname, "lien-he")}><Icon name="truck" /><span><small>Hỗ trợ</small><b>Liên hệ</b></span></button>
-        <button className="cart-button" onClick={() => navigate("/cart")} aria-label={`Giỏ hàng có ${count} sản phẩm`}><Icon name="cart" size={24} />{count > 0 && <span>{count}</span>}</button>
+        <div className="header-actions">
+          <button className="header-action account-action" onClick={() => navigate("/account")} aria-label="Tài khoản">
+            <Icon name="user" />
+            <span><small>Tài khoản</small><b>{user ? user.fullName || user.username : "Đăng nhập"}</b></span>
+          </button>
+          <button className="header-action contact-action" onClick={() => goSection(navigate, pathname, "lien-he")} aria-label="Liên hệ"><Icon name="truck" /><span><small>Hỗ trợ</small><b>Liên hệ</b></span></button>
+          <button className="cart-button" onClick={() => navigate("/cart")} aria-label={`Giỏ hàng có ${count} sản phẩm`}><Icon name="cart" size={24} />{count > 0 && <span>{count}</span>}</button>
+        </div>
       </div>
       <nav className="main-nav">
         <div className="shell nav-inner">
           <button className={pathname === "/" ? "active" : ""} onClick={() => navigate("/")}>Trang chủ</button>
-          <button className={pathname.startsWith("/category") ? "active" : ""} onClick={() => firstCategory && navigate(`/category/${firstCategory}`)}>Danh mục sản phẩm</button>
+          <button className={pathname.startsWith("/category") ? "active" : ""} onClick={() => navigate("/category")}>Danh mục sản phẩm</button>
           <button onClick={() => goSection(navigate, pathname, "khuyen-mai")}>Khuyến mãi</button>
           <button className={pathname === "/orders" ? "active" : ""} onClick={() => navigate("/orders")}>Đơn hàng</button>
           <button onClick={() => goSection(navigate, pathname, "lien-he")}>Liên hệ</button>

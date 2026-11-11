@@ -17,7 +17,7 @@ export default function ProductCard({ product }) {
       <div className="product-body">
         <p className="brand">{product.brand || product.shop?.shopName}</p>
         <button className="product-name" onClick={open}>{product.productName}</button>
-        <div className="rating"><span><Icon name="star" size={13} fill="currentColor" /></span><b>{product.rating || "Mới"}</b><small>({product.reviewCount})</small></div>
+        <div className="rating"><span><Icon name="star" size={12} /></span><b>{product.rating || "Mới"}</b><small>({product.reviewCount})</small></div>
         <div className="prices"><b>{money(product.price)}</b>{product.oldPrice > product.price && <del>{money(product.oldPrice)}</del>}</div>
         <p className={inStock ? "stock" : "out"}><span className="status-dot" />{inStock ? "Còn hàng" : "Tạm hết hàng"}</p>
         <button className="add-button" disabled={!inStock} onClick={() => add(product)}><Icon name="cart" size={17} />{inStock ? "Thêm vào giỏ" : "Tạm hết hàng"}</button>

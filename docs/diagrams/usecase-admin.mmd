@@ -1,0 +1,18 @@
+flowchart LR
+    Admin(["👤 Admin"])
+    subgraph SYS["Use case của Admin"]
+        direction TB
+        UC0(["Đăng nhập"])
+        UC1(["Duyệt đối tác"])
+        UC2(["Duyệt sản phẩm"])
+        UC3(["Quản lý người dùng"])
+        UC4(["Khóa / mở khóa tài khoản"])
+        UC5(["Xem thống kê tổng quan"])
+    end
+    Admin --- UC1
+    Admin --- UC2
+    Admin --- UC3
+    Admin --- UC5
+    UC3 -. "&laquo;include&raquo;" .-> UC4
+    UC1 -. "&laquo;include&raquo;" .-> UC0
+    UC2 -. "&laquo;include&raquo;" .-> UC0

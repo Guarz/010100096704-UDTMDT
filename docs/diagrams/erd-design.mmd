@@ -1,0 +1,97 @@
+erDiagram
+    USER ||--o{ ADDRESS : "has"
+    USER ||--o| CART : "owns (Buyer)"
+    USER ||--o{ SHOP : "manages (Seller)"
+    USER ||--o{ ORDER : "places (Buyer)"
+    USER ||--o{ REVIEW : "writes"
+    SHOP ||--o{ PRODUCT : "sells"
+    SHOP ||--o{ ORDER : "receives"
+    SHOP ||--o{ REVIEW : "receives"
+    CATEGORY ||--o{ PRODUCT : "contains"
+    PRODUCT ||--o{ PRODUCT_SPECIFICATION : "has details"
+    PRODUCT ||--o{ CART_ITEM : "added to"
+    PRODUCT ||--o{ ORDER_ITEM : "included in"
+    PRODUCT ||--o{ REVIEW : "receives"
+    CART ||--o{ CART_ITEM : "contains"
+    ORDER ||--o{ ORDER_ITEM : "contains"
+    ORDER ||--o| PAYMENT : "processed via"
+
+    USER {
+        int UserID PK
+        string Username
+        string Password
+        string Email
+        string Role "Buyer/Seller/Admin"
+        string Status "Active/Locked"
+    }
+    ADDRESS {
+        int AddressID PK
+        int UserID FK
+        string Street
+        string City
+    }
+    CART {
+        int CartID PK
+        int BuyerID FK
+    }
+    CART_ITEM {
+        int CartItemID PK
+        int CartID FK
+        int ProductID FK
+        int Quantity
+    }
+    SHOP {
+        int ShopID PK
+        int SellerID FK
+        string ShopName
+        string Description
+    }
+    CATEGORY {
+        int CategoryID PK
+        string CategoryName
+        string Description
+    }
+    PRODUCT {
+        int ProductID PK
+        int ShopID FK
+        int CategoryID FK
+        string ProductName
+        decimal Price
+        int Stock
+        string ApprovalStatus "Pending/Approved"
+    }
+    PRODUCT_SPECIFICATION {
+        int SpecID PK
+        int ProductID FK
+        string AttributeName
+        string AttributeValue
+    }
+    ORDER {
+        int OrderID PK
+        int BuyerID FK
+        int ShopID FK
+        datetime OrderDate
+        decimal TotalAmount
+        string OrderStatus "Shipping/Delivered/Canceled"
+    }
+    ORDER_ITEM {
+        int OrderItemID PK
+        int OrderID FK
+        int ProductID FK
+        int Quantity
+        decimal UnitPrice
+    }
+    PAYMENT {
+        int PaymentID PK
+        int OrderID FK
+        string PaymentMethod "VNPay"
+        string PaymentStatus
+    }
+    REVIEW {
+        int ReviewID PK
+        int BuyerID FK
+        int ShopID FK
+        int ProductID FK
+        int Rating
+        string Comment
+    }

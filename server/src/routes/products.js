@@ -23,6 +23,8 @@ const SORTS = {
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const specLabel = (s) => `${s.attributeName}: ${s.attributeValue}`;
 const isId = (id) => mongoose.isValidObjectId(id);
+// Danh sách dùng aggregate() - không tự ép kiểu như find(), nên phải đổi id dạng chuỗi sang ObjectId
+const oid = (id) => new mongoose.Types.ObjectId(String(id));
 
 async function buildFilter(query) {
   const filter = { approvalStatus: "Approved" };
@@ -37,8 +39,8 @@ async function buildFilter(query) {
       { category: { $in: cats.map((c) => c._id) } },
     ];
   }
-  if (query.category && isId(query.category)) filter.category = query.category;
-  if (query.shop && isId(query.shop)) filter.shop = query.shop;
+  if (query.category && isId(query.category)) filter.category = oid(query.category);
+  if (query.shop && isId(query.shop)) filter.shop = oid(query.shop);
   if (query.brands) filter.brand = { $in: String(query.brands).split(",") };
   if (query.minPrice || query.maxPrice) {
     filter.price = {};

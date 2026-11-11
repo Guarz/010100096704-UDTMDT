@@ -1,5 +1,54 @@
 /* Bổ sung cho các phần giao diện mới (không có trong bản thiết kế gốc), cùng ngôn ngữ thiết kế NOVA */
 
+/* ===== Header responsive =====
+   >1100px : đầy đủ (logo | tìm kiếm | tài khoản, liên hệ, giỏ) + menu
+   ≤1100px : nút tài khoản thu gọn còn icon, ẩn "Liên hệ", menu cuộn ngang
+   ≤760px  : 2 hàng (logo + icon / ô tìm kiếm), menu dạng thanh cuộn ngang */
+.top-note{position:relative;padding-inline:16px;}
+.header-main{min-width:0;}
+.search-wrap{min-width:0;}
+.header-actions{flex:none;align-items:center;gap:18px;margin-left:auto;display:flex;}
+.header-action{border-radius:10px;}
+.header-action:hover b{color:var(--blue);}
+.account-action b{text-overflow:ellipsis;white-space:nowrap;max-width:140px;overflow:hidden;}
+.nav-inner{scrollbar-width:none;overflow-x:auto;}
+.nav-inner::-webkit-scrollbar{display:none;}
+.nav-inner button{white-space:nowrap;flex:none;}
+.nav-promo{white-space:nowrap;flex:none;}
+
+@media (max-width:1100px){
+  .top-note span{display:none;}
+  .header-main{gap:16px;}
+  .search-wrap{max-width:none;}
+  .header-actions{gap:10px;}
+  .header-action{display:flex;}
+  .header-action.account-action{background:var(--pale);width:44px;height:44px;color:var(--blue);justify-content:center;padding:0;}
+  .header-action.account-action>svg{color:var(--blue);}
+  .header-action span,.contact-action{display:none !important;}
+  .nav-inner{gap:24px;}
+  .nav-promo{display:none;}
+}
+
+@media (max-width:760px){
+  .app>header{box-shadow:0 4px 16px #10234912;}
+  .top-note{text-align:center;height:auto;min-height:28px;padding:6px 12px;font-size:10px;line-height:1.4;}
+  .header-main{flex-wrap:wrap;gap:10px 12px;height:auto;padding-block:10px;}
+  .logo{font-size:21px;}
+  .logo span{border-radius:10px;width:33px;height:33px;font-size:18px;}
+  .header-actions{gap:8px;}
+  .header-action.account-action,.cart-button{border-radius:11px;width:40px;height:40px;}
+  .search-wrap{order:3;flex-basis:100%;width:100%;max-width:none;margin:0;}
+  .search-box{height:44px;}
+  .search-box input{padding:0 12px;font-size:12px;}
+  .search-button{width:48px;}
+  .search-suggestions{top:50px;}
+  .main-nav{display:block;border-top:0;}
+  .nav-inner{gap:6px;height:auto;padding-block:8px;}
+  .nav-inner button{color:#46526a;background:var(--surface);border-radius:99px;padding:7px 13px;font-size:11px;}
+  .nav-inner button.active{color:#fff;background:var(--blue);}
+  .nav-inner button.active:after{display:none;}
+}
+
 .breadcrumb a{color:var(--muted);}
 .breadcrumb a:hover{color:var(--blue);}
 .breadcrumb .crumb{gap:9px;display:flex;}
@@ -9,6 +58,21 @@
 .spinner{border:2px solid var(--line);border-top-color:var(--blue);border-radius:50%;width:18px;height:18px;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .muted-text{color:var(--muted);font-size:10px;}
+.filter-group label .filter-count{color:var(--muted);margin-left:auto;font-size:9px;}
+
+/* ===== Font Awesome ===== */
+.svg-inline--fa{flex:none;}
+.fa-stars{color:#ffad00;align-items:center;gap:2px;display:inline-flex;vertical-align:middle;}
+.stars{align-items:center;gap:6px;display:inline-flex;}
+.review-stars{display:flex;}
+.star-picker button{display:grid;}
+.social a{align-items:center;gap:5px;display:inline-flex;}
+.benefits{color:var(--navy);}
+.social a:hover{color:#fff;border-color:#5f9dff;}
+.icon-picker{grid-column:1 / -1;order:1;flex-wrap:wrap;gap:6px;display:flex;}
+.icon-picker button{border:1px solid var(--line);color:#536078;background:#fff;border-radius:8px;place-items:center;width:36px;height:36px;display:grid;}
+.icon-picker button:hover{border-color:var(--blue);color:var(--blue);}
+.icon-picker button.active{border-color:var(--blue);background:var(--blue);color:#fff;}
 
 .toast.error span{background:#dc4d3e;}
 
@@ -109,7 +173,7 @@
 .seller-orders-head{grid-template-columns:.8fr 1.1fr 1.6fr .8fr .8fr 1fr;}
 .category-head{grid-template-columns:1.2fr 2fr .6fr .7fr;}
 .category-icon{background:var(--pale);color:var(--blue);border-radius:9px;place-items:center;width:36px;height:36px;display:grid;}
-.category-form{grid-template-columns:1fr 1.6fr .6fr auto;}
+.category-form{grid-template-columns:1fr 1.6fr auto;}
 .moderation-grid button:disabled{opacity:.4;cursor:not-allowed;}
 
 .product-editor{grid-template-columns:repeat(3,1fr);align-items:start;}
