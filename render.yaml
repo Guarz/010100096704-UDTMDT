@@ -1,0 +1,32 @@
+# Render Blueprint: 1 Web Service chạy cả API (Express) lẫn giao diện React đã build.
+# Render -> New -> Blueprint -> chọn repo này. Các biến sync: false sẽ được hỏi khi tạo.
+services:
+  - type: web
+    name: nova-ecommerce
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: TMDT
+      - key: JWT_SECRET
+        generateValue: true
+      # Điền URL Render của service, VD: https://nova-ecommerce.onrender.com
+      - key: CLIENT_URL
+        sync: false
+      - key: SERVER_URL
+        sync: false
+      # VNPay sandbox (để trống -> dùng trang thanh toán mô phỏng)
+      - key: VNP_TMN_CODE
+        sync: false
+      - key: VNP_HASH_SECRET
+        sync: false
+      - key: VNP_URL
+        value: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html

@@ -48,6 +48,29 @@ npm run dev      # http://localhost:5173 (tự proxy /api sang cổng 5000)
 | Buyer | `quocbao` | Có yêu cầu đối tác "Bảo Gear" đang chờ duyệt (chỉ khi seed database mới) |
 | Buyer | `hoangnam` | Tài khoản đã bị khóa |
 
+## Deploy lên Render.com
+
+Dự án là Node.js nên **không cần `requirements.txt`** (file đó chỉ dành cho Python). Render đọc `package.json` ở thư mục gốc:
+
+- `npm run build`: cài thư viện cho `server/`, `client/` và build giao diện React ra `client/dist`
+- `npm start`: chạy Express; Express vừa phục vụ API `/api/*` vừa trả giao diện trong `client/dist` → chỉ cần **1 Web Service**
+
+**Cách 1: Blueprint (dùng `render.yaml`)**: Render → **New → Blueprint** → chọn repo GitHub → nhập các biến được hỏi.
+
+**Cách 2: tạo tay**: Render → **New → Web Service** → chọn repo, Runtime **Node**, Build Command `npm run build`, Start Command `npm start`, Health Check Path `/api/health`.
+
+Biến môi trường cần khai báo trên Render (không đưa file `.env` lên GitHub):
+
+| Biến | Giá trị |
+|---|---|
+| `MONGODB_URI` | Chuỗi kết nối Atlas Cluster0 (giống `server/.env`) |
+| `MONGODB_DB` | `TMDT` |
+| `JWT_SECRET` | Chuỗi bí mật dài, ngẫu nhiên |
+| `CLIENT_URL`, `SERVER_URL` | URL của service, VD `https://nova-ecommerce.onrender.com` |
+| `VNP_TMN_CODE`, `VNP_HASH_SECRET` | (tùy chọn) VNPay sandbox |
+
+Atlas → **Network Access** phải cho phép IP của Render (đang mở `0.0.0.0/0` nên đã được). Gói Free của Render sẽ "ngủ" sau 15 phút không có truy cập, lần mở đầu tiên mất khoảng 30–60 giây.
+
 ## Chức năng
 
 **Đăng ký:** chỉ cần tên đăng nhập, email, mật khẩu. Họ tên, số điện thoại, địa chỉ để trống và bổ sung trong **Tài khoản → Thông tin cá nhân / Sổ địa chỉ**. Khi đặt hàng bắt buộc phải có đủ họ tên, số điện thoại hợp lệ và ít nhất 1 địa chỉ (trang thanh toán cho nhập trực tiếp; server cũng kiểm tra lại).

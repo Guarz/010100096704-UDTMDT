@@ -1,5 +1,8 @@
 import express from "express";
 import cors from "cors";
+import { existsSync } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import { config } from "./config.js";
 import { connectDb } from "./db.js";
 import authRoutes from "./routes/auth.js";
@@ -32,6 +35,14 @@ app.use("/api/partner", partnerRoutes);
 
 app.use("/api", (_req, res) => res.status(404).json({ message: "Không tìm thấy API" }));
 
+// Production (Render): phục vụ luôn giao diện React đã build ở client/dist,
+// mọi đường dẫn không phải /api trả về index.html để React Router xử lý
+const clientDist = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../client/dist");
+if (existsSync(clientDist)) {
+  app.use(express.static(clientDist, { index: false, maxAge: "7d" }));
+  app.use((req, res, next) => (req.method === "GET" && !path.extname(req.path) ? res.sendFile(path.join(clientDist, "index.html")) : next()));
+}
+
 // eslint-disable-next-line no-unused-vars
 app.use((err, _req, res, _next) => {
   if (err.name === "ValidationError" || err.name === "CastError") return res.status(400).json({ message: "Dữ liệu không hợp lệ" });
@@ -41,7 +52,7 @@ app.use((err, _req, res, _next) => {
 });
 
 connectDb()
-  .then(() => app.listen(config.port, () => console.log(`API running at http://localhost:${config.port}`)))
+  .then(() => app.listen(config.port, () => console.log(`Server running on port ${config.port}${existsSync(clientDist) ? " (kèm giao diện client/dist)" : ""}`)))
   .catch((err) => {
     console.error("Không kết nối được MongoDB:", err.message);
     process.exit(1);
